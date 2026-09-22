@@ -1,0 +1,7 @@
+export { HomePage } from './HomePage'
+export { PatientPortal } from './PatientPortal'
+export { BookAppointment } from './BookAppointment'
+export { PatientForms } from './PatientForms'
+export { InsuranceBilling } from './InsuranceBilling'
+export { PrescriptionRefill } from './PrescriptionRefill'
+export { PrivacyPolicy } from './PrivacyPolicy'

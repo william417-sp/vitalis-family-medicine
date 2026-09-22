@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { 
   Stethoscope, 
   HeartPulse, 
@@ -5,7 +6,9 @@ import {
   Syringe, 
   FlaskConical, 
   Video,
-  ArrowRight
+  ArrowRight,
+  Baby,
+  Brain
 } from 'lucide-react'
 
 const services = [
@@ -13,13 +16,13 @@ const services = [
     icon: Stethoscope,
     title: 'Annual Physicals',
     description: 'Comprehensive wellness exams to keep you healthy year-round. Includes vital checks, screenings, and personalized health plans.',
-    color: 'green',
+    color: 'primary',
   },
   {
     icon: HeartPulse,
-    title: 'Chronic Care Management',
-    description: 'Expert management of diabetes, hypertension, heart disease, and other chronic conditions with ongoing support.',
-    color: 'red',
+    title: 'Chronic Care',
+    description: 'Expert management of diabetes, hypertension, heart disease, and other chronic conditions with ongoing support and monitoring.',
+    color: 'rose',
   },
   {
     icon: Thermometer,
@@ -31,7 +34,7 @@ const services = [
     icon: Syringe,
     title: 'Vaccinations',
     description: 'Full immunization services for children and adults including flu shots, COVID-19, travel vaccines, and more.',
-    color: 'blue',
+    color: 'accent',
   },
   {
     icon: FlaskConical,
@@ -43,84 +46,90 @@ const services = [
     icon: Video,
     title: 'Telehealth',
     description: 'Virtual visits from the comfort of your home. Convenient care for follow-ups, consultations, and minor concerns.',
-    color: 'teal',
+    color: 'sky',
+  },
+  {
+    icon: Baby,
+    title: 'Pediatric Care',
+    description: 'Well-child visits, developmental screenings, school physicals, and compassionate care for your little ones.',
+    color: 'pink',
+  },
+  {
+    icon: Brain,
+    title: 'Mental Wellness',
+    description: 'Screening and support for anxiety, depression, and stress management. Referrals to specialists when needed.',
+    color: 'indigo',
   },
 ]
 
-const colorClasses = {
-  green: 'bg-green-100 text-green-600 group-hover:bg-green-600 group-hover:text-white',
-  red: 'bg-red-100 text-red-600 group-hover:bg-red-600 group-hover:text-white',
-  orange: 'bg-orange-100 text-orange-600 group-hover:bg-orange-600 group-hover:text-white',
-  blue: 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white',
-  purple: 'bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white',
-  teal: 'bg-teal-100 text-teal-600 group-hover:bg-teal-600 group-hover:text-white',
+const colorClasses: Record<string, { bg: string; icon: string; hover: string }> = {
+  primary: { bg: 'bg-primary-100', icon: 'text-primary-600', hover: 'group-hover:bg-primary-600 group-hover:text-white' },
+  rose: { bg: 'bg-rose-100', icon: 'text-rose-600', hover: 'group-hover:bg-rose-600 group-hover:text-white' },
+  orange: { bg: 'bg-orange-100', icon: 'text-orange-600', hover: 'group-hover:bg-orange-600 group-hover:text-white' },
+  accent: { bg: 'bg-accent-100', icon: 'text-accent-600', hover: 'group-hover:bg-accent-600 group-hover:text-white' },
+  purple: { bg: 'bg-purple-100', icon: 'text-purple-600', hover: 'group-hover:bg-purple-600 group-hover:text-white' },
+  sky: { bg: 'bg-sky-100', icon: 'text-sky-600', hover: 'group-hover:bg-sky-600 group-hover:text-white' },
+  pink: { bg: 'bg-pink-100', icon: 'text-pink-600', hover: 'group-hover:bg-pink-600 group-hover:text-white' },
+  indigo: { bg: 'bg-indigo-100', icon: 'text-indigo-600', hover: 'group-hover:bg-indigo-600 group-hover:text-white' },
 }
 
 export function Services() {
   return (
-    <section id="services" className="py-20 lg:py-28 bg-white">
+    <section id="services" className="section bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-block text-green-600 font-semibold text-sm uppercase tracking-wider mb-4">
-            Our Services
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+        <div className="section-header">
+          <span className="section-label">Our Services</span>
+          <h2 className="section-title">
             Comprehensive Care for{' '}
-            <span className="text-green-600">Every Need</span>
+            <span className="text-primary-600">Every Need</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="section-description">
             From preventive care to managing complex health conditions, we offer a full range of 
             primary care services to keep your whole family healthy.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              className="group relative bg-gray-50 hover:bg-white rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 border border-transparent hover:border-gray-100"
-            >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => {
+            const colors = colorClasses[service.color]
+            return (
               <div
-                className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 ${
-                  colorClasses[service.color as keyof typeof colorClasses]
-                }`}
+                key={service.title}
+                className="group card p-6 hover:shadow-xl cursor-pointer animate-fadeIn"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <service.icon className="w-7 h-7" />
+                <div
+                  className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 ${colors.bg} ${colors.icon} ${colors.hover}`}
+                >
+                  <service.icon className="w-7 h-7" />
+                </div>
+
+                <h3 className="text-lg font-bold text-warm-900 mb-2">
+                  {service.title}
+                </h3>
+
+                <p className="text-warm-600 text-sm leading-relaxed">
+                  {service.description}
+                </p>
               </div>
-
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                {service.title}
-              </h3>
-
-              <p className="text-gray-600 leading-relaxed mb-4">
-                {service.description}
-              </p>
-
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 text-green-600 font-medium group-hover:gap-3 transition-all"
-              >
-                Learn more
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center">
-          <p className="text-gray-600 mb-4">
-            Don't see what you need? We offer many additional services.
+          <p className="text-warm-600 mb-6">
+            Ready to schedule your visit?
           </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold transition-colors"
+          <Link
+            to="/book"
+            className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-primary-500/25 hover:gap-3"
           >
-            Contact us to discuss your needs
+            Book an Appointment
             <ArrowRight className="w-5 h-5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
